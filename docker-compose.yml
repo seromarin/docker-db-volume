@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+        backend:
+                build: ./backend
+                ports:
+                        - "3000:3000"
+                depends_on:
+                        - db
+        frontend:
+                build: ./frontend
+                depends_on:
+                        - backend
+                ports:
+                        - "8080:80"
+        db:
+                image: postgres:latest
+                volumes:
+                        - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
+                        - "dbdata:/var/lib/postgresql/data"
+volumes:
+        dbdata:
