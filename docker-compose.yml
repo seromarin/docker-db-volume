@@ -2,13 +2,13 @@ version: '3.7'
 services:
     backend:
         build: ./backend
-        ports:
-            - "3000:3000"
+        # ports:
+        #     - "3000:3000"
         restart: always
         environment:
-            DB_SERVER: database
-        links:
-            - db
+            DB_SERVER: db
+        # links:
+        #     - db
         depends_on:
             - db
         networks: 
@@ -17,10 +17,13 @@ services:
         build: ./frontend
         depends_on:
             - backend
+        networks: 
+            - backend
         ports:
             - "8080:80"
     db:
         image: postgres:latest
+        container_name: db
         environment:
             POSTGRES_USER: root
             POSTGRES_DB: base
@@ -28,13 +31,13 @@ services:
             DATABASE_HOST: db 
         networks: 
             - backend
-        ports:
-            - "5432:5232"
+        # ports:
+        #     - "5432:5232"
         volumes:
             - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
             - "dbdata:/var/lib/postgresql/data"
 networks:
     backend:
-        driver: "bridge"
+
 volumes:
     dbdata:
